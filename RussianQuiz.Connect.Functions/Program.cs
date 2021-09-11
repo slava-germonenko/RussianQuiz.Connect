@@ -3,33 +3,29 @@ using System;
 using Azure.Extensions.AspNetCore.Configuration.Secrets;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 
-namespace RussianQuiz.Auth.Functions
+namespace RussianQuiz.Connect.Functions
 {
     public static class Program
     {
         public static void Main()
         {
             var host = new HostBuilder()
-                .ConfigureFunctionsWorkerDefaults()
-                .ConfigureServices(services =>
-                {
-                    var configuration = BuildConfiguration();
-                    services.AddSingleton(configuration);
-                })
+                .ConfigureAppConfiguration(ApplyConfiguration)
+                .ConfigureServices(ConfigureServices)
+                .ConfigureFunctionsWorkerDefaults(Configure)
                 .Build();
 
             host.Run();
         }
 
-        private static IConfigurationRoot BuildConfiguration()
+        private static void ApplyConfiguration(IConfigurationBuilder configurationBuilder)
         {
-            IConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-
             string localSettingsFileName = Environment.GetEnvironmentVariable("LocalSettingsFile");
             if (!string.IsNullOrEmpty(localSettingsFileName))
             {
@@ -53,7 +49,15 @@ namespace RussianQuiz.Auth.Functions
                 configurationBuilder.AddAzureKeyVault(secretClient, new KeyVaultSecretManager());
             }
 
-            return configurationBuilder.Build();
+            configurationBuilder.AddEnvironmentVariables();
+        }
+
+        private static void ConfigureServices(IServiceCollection services)
+        {
+        }
+
+        private static void Configure(IFunctionsWorkerApplicationBuilder app)
+        {
         }
     }
 }
