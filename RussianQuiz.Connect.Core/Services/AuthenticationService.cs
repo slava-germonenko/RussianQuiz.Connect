@@ -16,15 +16,22 @@ namespace RussianQuiz.Connect.Core.Services
 
         private readonly IHashingTool _hashingTool;
 
+        private readonly ITokenService _tokenService;
 
-        public AuthenticationService(AuthContext authContext, IHashingTool hashingTool)
+
+        public AuthenticationService(
+            AuthContext authContext,
+            IHashingTool hashingTool,
+            ITokenService tokenService
+        )
         {
             _authContext = authContext;
             _hashingTool = hashingTool;
+            _tokenService = tokenService;
         }
 
 
-        public async Task<User> AuthenticateAsync(string emailAddressOrUserName, string password)
+        public async Task<UserToken> AuthenticateAsync(string emailAddressOrUserName, string password)
         {
             User user = await _authContext.Users.FirstOrDefaultAsync(
                 u => u.EmailAddress.Equals(emailAddressOrUserName, StringComparison.OrdinalIgnoreCase)
@@ -33,10 +40,10 @@ namespace RussianQuiz.Connect.Core.Services
 
             if (user is null || !_hashingTool.ValidateHash(password, user.PasswordHash))
             {
-                throw new NotFoundException($"User with such credentials was not found.");
+                throw new NotFoundException("User with such credentials was not found.");
             }
 
-            return user;
+            return _tokenService.CreateToken(user);
         }
     }
 }

@@ -7,6 +7,6 @@ namespace RussianQuiz.Connect.Core.Services.Abstractions
 {
     public interface IAuthenticationService
     {
-        public Task<User> AuthenticateAsync(string emailAddressOrUserName, string password);
+        public Task<UserToken> AuthenticateAsync(string emailAddressOrUserName, string password);
     }
 }
