@@ -8,6 +8,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using RussianQuiz.Connect.Core;
+using RussianQuiz.Connect.Core.Services;
+using RussianQuiz.Connect.Core.Services.Abstractions;
+using RussianQuiz.Connect.Functions.Middleware;
+using RussianQuiz.Connect.Functions.Settings;
+
 
 namespace RussianQuiz.Connect.Functions
 {
@@ -20,8 +26,25 @@ namespace RussianQuiz.Connect.Functions
                 .ConfigureServices(ConfigureServices)
                 .ConfigureFunctionsWorkerDefaults(Configure)
                 .Build();
-
             host.Run();
+        }
+
+        private static void ConfigureServices(IServiceCollection services)
+        {
+            IConfigurationRoot configuration = CreateConfiguration();
+            services.Configure<AppSettings>(configuration);
+            services.Configure<AuthSettings>(configuration.GetSection("Auth"));
+            services.Configure<InfrastructureSettings>(configuration.GetSection("Infrastructure"));
+
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<ITokenService, JwtTokenService>();
+
+            services.AddDbContext<AuthContext>();
+        }
+
+        private static void Configure(IFunctionsWorkerApplicationBuilder app)
+        {
+            app.UseMiddleware<ExceptionsMiddleware>();
         }
 
         private static void ApplyConfiguration(IConfigurationBuilder configurationBuilder)
@@ -52,12 +75,11 @@ namespace RussianQuiz.Connect.Functions
             configurationBuilder.AddEnvironmentVariables();
         }
 
-        private static void ConfigureServices(IServiceCollection services)
+        private static IConfigurationRoot CreateConfiguration()
         {
-        }
-
-        private static void Configure(IFunctionsWorkerApplicationBuilder app)
-        {
+            var configurationBuilder = new ConfigurationBuilder();
+            ApplyConfiguration(configurationBuilder);
+            return configurationBuilder.Build();
         }
     }
 }

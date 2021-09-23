@@ -2,6 +2,15 @@
   "IsEncrypted": false,
   "Values": {
     "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
-    "AzureWebJobsStorage": "UseDevelopmentStorage=true"
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "AzureWebJobsFeatureFlags": "EnableActionResultHandling",
+    "Auth:HttpOnlyTokenCookie": false,
+    "Auth:SecureTokenCookie": false,
+    "Auth:TokenTtlMinutes": 1,
+    "Auth:TokenCookieSameSitePolicy": "Lax",
+    "Auth:TokenCookieName": "",
+    "Auth:TokenCookieDomain": ".russian-quiz.com",
+    "Auth:TokenSecretKey": "",
+    "Infrastructure:CoreAzureSqlConnectionString": ""
   }
 }
