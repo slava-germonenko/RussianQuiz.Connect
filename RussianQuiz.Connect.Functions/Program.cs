@@ -11,8 +11,10 @@ using Microsoft.Extensions.Hosting;
 using RussianQuiz.Connect.Core;
 using RussianQuiz.Connect.Core.Services;
 using RussianQuiz.Connect.Core.Services.Abstractions;
+using RussianQuiz.Connect.Core.Settings;
 using RussianQuiz.Connect.Functions.Middleware;
 using RussianQuiz.Connect.Functions.Settings;
+using RussianQuiz.Connect.Functions.Settings.Services;
 
 
 namespace RussianQuiz.Connect.Functions
@@ -38,12 +40,15 @@ namespace RussianQuiz.Connect.Functions
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<ITokenService, JwtTokenService>();
+            services.AddScoped<IJwtTokenSettings, JwtTokenSettings>();
 
+            services.AddScoped<IAuthContextSettings, AuthContextSettings>();
             services.AddDbContext<AuthContext>();
         }
 
         private static void Configure(IFunctionsWorkerApplicationBuilder app)
         {
+            app.UseMiddleware<AuthorizationMiddleware>();
             app.UseMiddleware<ExceptionsMiddleware>();
         }
 

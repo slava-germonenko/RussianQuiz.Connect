@@ -8,7 +8,7 @@ namespace RussianQuiz.Connect.Core.Settings
     {
         public string Issuer { get; }
 
-        public Encoding SecretEncoding { get; set; }
+        public Encoding SecretEncoding { get; }
 
         public string Secret { get; }
 
