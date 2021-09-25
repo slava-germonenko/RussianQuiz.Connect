@@ -13,5 +13,9 @@ namespace RussianQuiz.Connect.Functions.Settings
         public string TokenCookieName { get; set; }
 
         public string TokenCookieDomain { get; set; }
+
+        public string TokenIssuer { get; set; }
+
+        public string TokenSecretKey { get; set; }
     }
 }
