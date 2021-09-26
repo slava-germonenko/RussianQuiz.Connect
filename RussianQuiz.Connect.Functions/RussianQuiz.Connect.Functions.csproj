@@ -27,7 +27,4 @@
     <ItemGroup>
       <ProjectReference Include="..\RussianQuiz.Connect.Core\RussianQuiz.Connect.Core.csproj" />
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Exceptions" />
-    </ItemGroup>
 </Project>
