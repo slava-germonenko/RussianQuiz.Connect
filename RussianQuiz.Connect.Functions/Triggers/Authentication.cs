@@ -59,7 +59,7 @@ namespace RussianQuiz.Connect.Functions.Triggers
             var authCookie = CreateAuthorizationCookie(response, userToken.TokenValue, userToken.ExpiresAt);
             response.Cookies.Append(authCookie);
 
-            response.SetBody(authCookie);
+            response.SetBody(userToken);
             return response;
         }
 
