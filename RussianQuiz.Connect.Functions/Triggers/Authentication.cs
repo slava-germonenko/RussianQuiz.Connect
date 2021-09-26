@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 
 using RussianQuiz.Connect.Core.Models;
 using RussianQuiz.Connect.Core.Services.Abstractions;
+using RussianQuiz.Connect.Functions.Attributes;
 using RussianQuiz.Connect.Functions.Extensions;
 using RussianQuiz.Connect.Functions.Models;
 using RussianQuiz.Connect.Functions.Models.Responses;
@@ -27,7 +28,7 @@ namespace RussianQuiz.Connect.Functions.Triggers
 
         public Authentication(
             IAuthenticationService authenticationService,
-            IOptions<AuthSettings> authSettingsOptions
+            IOptionsSnapshot<AuthSettings> authSettingsOptions
         )
         {
             _authenticationService = authenticationService;
@@ -36,6 +37,7 @@ namespace RussianQuiz.Connect.Functions.Triggers
 
 
         [Function("Authentication")]
+        [RequireTokenAuthorization]
         public async Task<HttpResponseData> AuthenticateAsync(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "auth/login")] [FromBody] HttpRequestData req
         )
@@ -63,7 +65,7 @@ namespace RussianQuiz.Connect.Functions.Triggers
 
         [Function("Logout")]
         public HttpResponseData Logout(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "auth/lotout")] HttpRequestData req
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "auth/logout")] HttpRequestData req
         )
         {
             var response = req.CreateResponse();

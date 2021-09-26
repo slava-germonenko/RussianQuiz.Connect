@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 
 using Microsoft.Azure.Functions.Worker;
@@ -20,13 +21,17 @@ namespace RussianQuiz.Connect.Functions.Middleware
             {
                 await UnwrapAzureInnerException(context, next);
             }
+            catch (AuthenticationException ex)
+            {
+                SetErrorResult(context, HttpStatusCode.Unauthorized, ex.Message);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                SetErrorResult(context, HttpStatusCode.Forbidden, ex.Message);
+            }
             catch (NotFoundException ex)
             {
-                if (context.TryGetHttpRequestData(out var request))
-                {
-                    var response = request.CreateResponse(HttpStatusCode.NotFound, new BaseErrorResponse(ex.Message));
-                    context.SetHttpResponse(response);
-                }
+                SetErrorResult(context, HttpStatusCode.NotFound, ex.Message);
             }
         }
 
@@ -41,6 +46,15 @@ namespace RussianQuiz.Connect.Functions.Middleware
             catch (AggregateException e)
             {
                 throw e.InnerException ?? e;
+            }
+        }
+
+        private void SetErrorResult(FunctionContext context, HttpStatusCode statusCode, string message)
+        {
+            if (context.TryGetHttpRequestData(out var request))
+            {
+                var response = request.CreateResponse(statusCode, new BaseErrorResponse(message));
+                context.SetHttpResponse(response);
             }
         }
     }
