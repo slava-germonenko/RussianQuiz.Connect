@@ -10,6 +10,8 @@
     "Auth:TokenCookieSameSitePolicy": "Lax",
     "Auth:TokenCookieName": "",
     "Auth:TokenCookieDomain": ".russian-quiz.com",
+    "Auth:TokenIssuer": "localhost",
+    "Auth:TokenQueryParamName": "token",
     "Auth:TokenSecretKey": "",
     "Infrastructure:CoreAzureSqlConnectionString": ""
   }

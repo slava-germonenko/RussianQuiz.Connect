@@ -13,6 +13,8 @@ using RussianQuiz.Connect.Core.Services;
 using RussianQuiz.Connect.Core.Services.Abstractions;
 using RussianQuiz.Connect.Core.Settings;
 using RussianQuiz.Connect.Functions.Middleware;
+using RussianQuiz.Connect.Functions.Services;
+using RussianQuiz.Connect.Functions.Services.Abstractions;
 using RussianQuiz.Connect.Functions.Settings;
 using RussianQuiz.Connect.Functions.Settings.Services;
 
@@ -42,13 +44,18 @@ namespace RussianQuiz.Connect.Functions
             services.AddScoped<ITokenService, JwtTokenService>();
             services.AddScoped<IJwtTokenSettings, JwtTokenSettings>();
 
+            services.AddScoped<IAuthorizationTokenProvider, AuthorizationHeaderTokenProvider>();
+            services.AddScoped<IAuthorizationTokenProvider, CookieTokenProvider>();
+            services.AddScoped<IAuthorizationTokenProvider, QueryTokenProvider>();
+
             services.AddScoped<IAuthContextSettings, AuthContextSettings>();
             services.AddDbContext<AuthContext>();
         }
 
         private static void Configure(IFunctionsWorkerApplicationBuilder app)
         {
-            app.UseMiddleware<AuthorizationMiddleware>();
+            // TODO: Uncomment once we find out how to mark triggers that require authorization
+            // app.UseMiddleware<AuthorizationMiddleware>();
             app.UseMiddleware<ExceptionsMiddleware>();
         }
 
