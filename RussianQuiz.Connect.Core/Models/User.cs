@@ -15,6 +15,7 @@ namespace RussianQuiz.Connect.Core.Models
         [Required, StringLength(200)]
         public string Username { get; set; }
 
+        [StringLength(400)]
         public string PasswordHash { get; set; }
 
         /// <summary>
