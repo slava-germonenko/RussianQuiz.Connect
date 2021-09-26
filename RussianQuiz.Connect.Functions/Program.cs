@@ -43,6 +43,8 @@ namespace RussianQuiz.Connect.Functions
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<ITokenService, JwtTokenService>();
             services.AddScoped<IJwtTokenSettings, JwtTokenSettings>();
+            services.AddScoped<IHashingTool, HashingTool>();
+            services.AddScoped<IHashingSettings, StandardHashingSettings>();
 
             services.AddScoped<IAuthorizationTokenProvider, AuthorizationHeaderTokenProvider>();
             services.AddScoped<IAuthorizationTokenProvider, CookieTokenProvider>();

@@ -21,7 +21,7 @@ namespace RussianQuiz.Connect.Core.Models
         /// <summary>
         /// See <see cref="Enums.UserIdentityProvider"/>
         /// </summary>
-        public string UserIdentityProvider { get; set; }
+        public string IdentityProvider { get; set; }
 
         public ICollection<ServicePlan> ServicePlans { get; set; }
     }

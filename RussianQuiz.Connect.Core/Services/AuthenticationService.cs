@@ -34,8 +34,8 @@ namespace RussianQuiz.Connect.Core.Services
         public async Task<UserToken> AuthenticateAsync(string emailAddressOrUserName, string password)
         {
             User user = await _authContext.Users.FirstOrDefaultAsync(
-                u => u.EmailAddress.Equals(emailAddressOrUserName, StringComparison.OrdinalIgnoreCase)
-                    || u.Username.Equals(emailAddressOrUserName, StringComparison.OrdinalIgnoreCase)
+                u => u.EmailAddress == emailAddressOrUserName
+                    || u.Username == emailAddressOrUserName
             );
 
             if (user is null || !_hashingTool.ValidateHash(password, user.PasswordHash))
