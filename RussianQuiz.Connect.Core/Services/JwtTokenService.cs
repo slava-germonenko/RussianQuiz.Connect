@@ -70,7 +70,8 @@ namespace RussianQuiz.Connect.Core.Services
         private ClaimsIdentity CreateIdentity(User user) => new (
             new[]
             {
-                new Claim("email", user.EmailAddress)
+                new Claim("uid", user.Id.ToString()),
+                new Claim("email", user.EmailAddress),
             }
         );
     }
