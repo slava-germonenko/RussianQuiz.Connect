@@ -1,6 +1,6 @@
-namespace RussianQuiz.Connect.Functions.Settings
+namespace RussianQuiz.Connect.Functions.Options
 {
-    public class AuthSettings
+    public class AuthOptions
     {
         public bool HttpOnlyTokenCookie { get; set; }
 

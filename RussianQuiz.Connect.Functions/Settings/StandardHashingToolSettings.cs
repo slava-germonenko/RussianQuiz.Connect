@@ -4,7 +4,7 @@ using System.Text;
 using RussianQuiz.Connect.Core.Settings;
 
 
-namespace RussianQuiz.Connect.Functions.Settings.Services
+namespace RussianQuiz.Connect.Functions.Settings
 {
     public class StandardHashingSettings : IHashingSettings
     {

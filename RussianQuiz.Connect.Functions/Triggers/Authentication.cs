@@ -14,6 +14,7 @@ using RussianQuiz.Connect.Functions.Attributes;
 using RussianQuiz.Connect.Functions.Extensions;
 using RussianQuiz.Connect.Functions.Models;
 using RussianQuiz.Connect.Functions.Models.Responses;
+using RussianQuiz.Connect.Functions.Options;
 using RussianQuiz.Connect.Functions.Settings;
 
 
@@ -23,16 +24,16 @@ namespace RussianQuiz.Connect.Functions.Triggers
     {
         private readonly IAuthenticationService _authenticationService;
 
-        private readonly AuthSettings _authSettings;
+        private readonly AuthOptions _authOptions;
 
 
         public Authentication(
             IAuthenticationService authenticationService,
-            IOptionsSnapshot<AuthSettings> authSettingsOptions
+            IOptionsSnapshot<AuthOptions> authSettingsOptions
         )
         {
             _authenticationService = authenticationService;
-            _authSettings = authSettingsOptions.Value;
+            _authOptions = authSettingsOptions.Value;
         }
 
 
@@ -72,7 +73,7 @@ namespace RussianQuiz.Connect.Functions.Triggers
             response.StatusCode = HttpStatusCode.NoContent;
 
             var currentToken = req.Cookies
-                .FirstOrDefault(c => c.Name == _authSettings.TokenCookieName)
+                .FirstOrDefault(c => c.Name == _authOptions.TokenCookieName)
                 ?.Value;
 
             if (string.IsNullOrEmpty(currentToken))
@@ -88,12 +89,12 @@ namespace RussianQuiz.Connect.Functions.Triggers
 
         private IHttpCookie CreateAuthorizationCookie(HttpResponseData responseData, string value, DateTime? expiresAt)
         {
-            return new HttpCookie(_authSettings.TokenCookieName, value)
+            return new HttpCookie(_authOptions.TokenCookieName, value)
             {
                 Expires = expiresAt,
-                Domain = _authSettings.TokenCookieDomain,
-                HttpOnly = _authSettings.HttpOnlyTokenCookie,
-                Secure = _authSettings.SecureTokenCookie,
+                Domain = _authOptions.TokenCookieDomain,
+                HttpOnly = _authOptions.HttpOnlyTokenCookie,
+                Secure = _authOptions.SecureTokenCookie,
             };
         }
     }
