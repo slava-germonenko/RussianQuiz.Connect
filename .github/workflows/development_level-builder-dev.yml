@@ -12,6 +12,7 @@ on:
 env:
   AZURE_FUNCTIONAPP_PACKAGE_PATH: '.' # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '5.0.x' # set this to the dotnet version to use
+  FUNCTIONS_DOTNET_VERSION: '3.1.x'
 
 jobs:
   build-and-deploy:
@@ -20,10 +21,15 @@ jobs:
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@v2
 
-      - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
+      - name: Setup dotNET ${{ env.DOTNET_VERSION }} Environment
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
+          
+      - name: Setup Functions dotNET ${{ env.FUNCTIONS_DOTNET_VERSION }} Environment
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${ env.FUNCTIONS_DOTNET_VERSION }}
 
       - name: 'Resolve Project Dependencies Using Dotnet'
         shell: bash
