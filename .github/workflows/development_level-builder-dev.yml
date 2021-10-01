@@ -29,7 +29,7 @@ jobs:
       - name: Setup Functions dotNET ${{ env.FUNCTIONS_DOTNET_VERSION }} Environment
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: ${ env.FUNCTIONS_DOTNET_VERSION }}
+          dotnet-version: ${{ env.FUNCTIONS_DOTNET_VERSION }}
 
       - name: 'Resolve Project Dependencies Using Dotnet'
         shell: bash
