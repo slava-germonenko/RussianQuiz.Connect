@@ -13,10 +13,10 @@ using RussianQuiz.Connect.Core.Services;
 using RussianQuiz.Connect.Core.Services.Abstractions;
 using RussianQuiz.Connect.Core.Settings;
 using RussianQuiz.Connect.Functions.Middleware;
+using RussianQuiz.Connect.Functions.Options;
 using RussianQuiz.Connect.Functions.Services;
 using RussianQuiz.Connect.Functions.Services.Abstractions;
 using RussianQuiz.Connect.Functions.Settings;
-using RussianQuiz.Connect.Functions.Settings.Services;
 
 
 namespace RussianQuiz.Connect.Functions
@@ -36,9 +36,8 @@ namespace RussianQuiz.Connect.Functions
         private static void ConfigureServices(IServiceCollection services)
         {
             IConfigurationRoot configuration = CreateConfiguration();
-            services.Configure<AppSettings>(configuration);
-            services.Configure<AuthSettings>(configuration.GetSection("Auth"));
-            services.Configure<InfrastructureSettings>(configuration.GetSection("Infrastructure"));
+            services.Configure<AuthOptions>(configuration.GetSection("Auth"));
+            services.Configure<InfrastructureOptions>(configuration.GetSection("Infrastructure"));
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<ITokenService, JwtTokenService>();
